@@ -28,8 +28,8 @@ En este proyecto se utiliza para guardar los datos del usuario registrado.
 ## 📥 Instrucciones de instalación
 
 1. Clonar el repositorio
-2. Ejecutar:
-3. Ejecutar la aplicación:
+2. Ejecutar: flutter pub get
+3. Ejecutar la aplicación: flutter run
 
 
 ## 📂 Estructura del proyecto
