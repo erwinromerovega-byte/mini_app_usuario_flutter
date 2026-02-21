@@ -16,7 +16,6 @@ class _RegistroScreenState extends State<RegistroScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  // ⭐ Guardar en SQLite y navegar a perfil
   Future<void> _registrar() async {
 
     if (_formKey.currentState!.validate()) {
@@ -33,8 +32,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
         const SnackBar(content: Text("Usuario guardado ✅")),
       );
 
-      // Navegar a pantalla perfil
-      Navigator.pushNamed(context, "/perfil");
+      setState(() {});
     }
   }
 
@@ -46,6 +44,16 @@ class _RegistroScreenState extends State<RegistroScreen> {
     super.dispose();
   }
 
+  // Obtener último usuario
+  Future<Map<String, dynamic>?> obtenerUsuario() async {
+    final data = await DBHelper.getUltimoUsuario();
+
+    if (data.isNotEmpty) {
+      return data.first;
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,75 +61,123 @@ class _RegistroScreenState extends State<RegistroScreen> {
         title: const Text("Registro de Usuario"),
         centerTitle: true,
       ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
 
-              TextFormField(
-                controller: nombreController,
-                decoration: const InputDecoration(
-                  labelText: "Nombre",
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Ingrese su nombre";
-                  }
-                  return null;
-                },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+
+                  TextFormField(
+                    controller: nombreController,
+                    decoration: const InputDecoration(
+                      labelText: "Nombre",
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Ingrese su nombre";
+                      }
+                      return null;
+                    },
+                  ),
+
+                  const SizedBox(height: 15),
+
+                  TextFormField(
+                    controller: emailController,
+                    decoration: const InputDecoration(
+                      labelText: "Correo",
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Ingrese su correo";
+                      }
+                      if (!value.contains("@")) {
+                        return "Correo no válido";
+                      }
+                      return null;
+                    },
+                  ),
+
+                  const SizedBox(height: 15),
+
+                  TextFormField(
+                    controller: passwordController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: "Contraseña",
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Ingrese una contraseña";
+                      }
+                      if (value.length < 6) {
+                        return "Mínimo 6 caracteres";
+                      }
+                      return null;
+                    },
+                  ),
+
+                  const SizedBox(height: 25),
+
+                  ElevatedButton(
+                    onPressed: _registrar,
+                    child: const Text("Registrar"),
+                  ),
+                ],
               ),
+            ),
 
-              const SizedBox(height: 15),
+            const SizedBox(height: 30),
 
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: "Correo",
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Ingrese su correo";
-                  }
-                  if (!value.contains("@")) {
-                    return "Correo no válido";
-                  }
-                  return null;
-                },
-              ),
+            FutureBuilder(
+              future: obtenerUsuario(),
+              builder: (context, snapshot) {
 
-              const SizedBox(height: 15),
+                if (!snapshot.hasData) {
+                  return const Text("No hay usuario registrado");
+                }
 
-              TextFormField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: "Contraseña",
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Ingrese una contraseña";
-                  }
-                  if (value.length < 6) {
-                    return "Mínimo 6 caracteres";
-                  }
-                  return null;
-                },
-              ),
+                final usuario = snapshot.data as Map<String, dynamic>;
 
-              const SizedBox(height: 25),
+                return Card(
+                  elevation: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
 
-              ElevatedButton(
-                onPressed: _registrar,
-                child: const Text("Registrar"),
-              ),
-            ],
-          ),
+                        const CircleAvatar(
+                          radius: 40,
+                          child: Icon(Icons.person),
+                        ),
+
+                        const SizedBox(height: 15),
+
+                        Text(
+                          usuario["nombre"] ?? "",
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                        ),
+
+                        Text(usuario["email"] ?? ""),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
