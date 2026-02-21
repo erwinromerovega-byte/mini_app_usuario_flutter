@@ -31,6 +31,10 @@ En este proyecto se utiliza para guardar los datos del usuario registrado.
 2. Ejecutar: flutter pub get
 3. Ejecutar la aplicación: flutter run
 
+## 📸 Capturas de pantalla
+
+![App Screenshot](assets/screenshot.png)
+
 
 ## 📂 Estructura del proyecto
 
@@ -43,6 +47,9 @@ lib/
   - registro_screen.dart
   - perfil_screen.dart
 - main.dart
+
+pubspec.yaml
+README.md
 
 
 Autor
