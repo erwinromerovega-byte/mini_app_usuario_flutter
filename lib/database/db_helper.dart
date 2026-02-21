@@ -1,3 +1,5 @@
+// SQLite database helper - Mini app usuario
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
