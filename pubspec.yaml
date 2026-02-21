@@ -1,0 +1,41 @@
+name: mini_app_usuario
+description: "Mini app de registro y perfil de usuario"
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.7
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  sqflite: ^2.3.0
+  path: ^1.8.3
+
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+  # Paquete para cambiar el icono de la app
+  flutter_launcher_icons: ^0.13.1
+
+flutter:
+
+  uses-material-design: true
+
+  # Assets del proyecto
+  assets:
+    - assets/icon.png
+
+# Configuración del launcher icon
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon.png"
