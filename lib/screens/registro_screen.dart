@@ -94,7 +94,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                 },
               ),
 
-              const SizedBox(height: 15),
+              const SizedBox(height: 18),
 
               TextFormField(
                 controller: passwordController,
