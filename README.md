@@ -34,7 +34,7 @@ En este proyecto se utiliza para guardar los datos del usuario registrado.
 ## 📸 Capturas de pantalla
 
 ![App Screenshot](assets/screenshot.png)
-
+![App Screenshot](assets/screenshot1.png)
 
 ## 📂 Estructura del proyecto
 
